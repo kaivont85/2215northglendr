@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>2215 Northglen Drive</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#e9f1ff;
+      --ink:#1e1f23;
+      --muted:#6b7280;
+      --card:#ffffff;
+      --glow: 0 0 32px rgba(255,255,255,.9), 0 0 64px rgba(255,255,255,.6);
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    body{
+      font-family:'Montserrat',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      color:var(--ink);background:var(--bg);
+      -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+    }
+    img{max-width:100%;display:block}
+
+    /* Header */
+    header{text-align:center;padding:28px 14px 8px}
+    header .addr{font-family:'Great Vibes',cursive;font-size:clamp(28px,5vw,40px);margin:0 0 6px}
+    header .price{margin:6px 0 4px;font-weight:800}
+    header .meta{margin:0 0 12px;color:var(--muted);font-weight:600;letter-spacing:.2px}
+
+    /* Carousel – big, uniform tiles (like your old site) */
+    .carousel-wrap{position:relative;max-width:1400px;margin:0 auto 28px;padding:22px 64px}
+    .track{
+      display:flex;gap:22px;align-items:center;
+      overflow-x:auto;overflow-y:visible; /* never clip vertically */
+      scroll-behavior:smooth;
+      padding:6px 4px 12px;scrollbar-width:none;
+    }
+    .track::-webkit-scrollbar{display:none}
+
+    .slide{
+      flex:0 0 clamp(320px, 30vw, 520px);
+      max-width:clamp(320px, 30vw, 520px);
+      background:var(--card);
+      border-radius:16px;
+      box-shadow:0 8px 22px rgba(0,0,0,.10);
+      transition:box-shadow .35s ease, filter .35s ease, opacity .35s ease;
+      opacity:.55;                          /* non-center = subtly dim */
+      filter:saturate(.9);
+      cursor:pointer;
+    }
+    .slide img{
+      width:100%;height:auto;border-radius:16px;
+      user-select:none;pointer-events:none;
+    }
+    .slide.active{
+      opacity:1;filter:saturate(1);
+      box-shadow:var(--glow), 0 10px 28px rgba(0,0,0,.12); /* soft white glow */
+    }
+
+    .nav{
+      position:absolute;top:50%;transform:translateY(-50%);
+      width:46px;height:46px;border:0;border-radius:50%;cursor:pointer;
+      background:#fff;display:grid;place-items:center;
+      box-shadow:0 10px 26px rgba(0,0,0,.18);
+      z-index:3;
+    }
+    .nav:active{transform:translateY(-50%) scale(.97)}
+    .prev{left:12px}
+    .next{right:12px}
+
+    /* Sections */
+    .section{max-width:1200px;margin:0 auto;padding:0 18px}
+    .overview{background:#fff;border-radius:16px;box-shadow:0 10px 28px rgba(0,0,0,.08);padding:34px 28px;margin:8px auto 36px}
+    .overview h2{font-size:clamp(24px,3.2vw,32px);margin:0 0 14px}
+    .overview p{line-height:1.7;font-size:17px;margin:0}
+
+    .video-outer{max-width:1200px;margin:0 auto 36px;padding:0 18px}
+    .video{position:relative;width:100%;aspect-ratio:16/9;border-radius:16px;overflow:hidden;box-shadow:0 12px 28px rgba(0,0,0,.16);background:#000}
+    .video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+
+    /* Full-width footer you liked */
+    .site-footer{
+      margin-top:40px;
+      background:
+        radial-gradient(1200px 300px at 50% -120px, rgba(255,255,255,.75), transparent 70%),
+        linear-gradient(180deg,#eaf2ff 0%,#dfeaff 100%);
+      padding:42px 18px 60px;width:100%;
+    }
+    .footer-inner{
+      max-width:1400px;margin:0 auto;background:#fff;border-radius:18px;box-shadow:0 16px 40px rgba(0,0,0,.12);
+      padding:34px 24px;display:grid;grid-template-columns:180px 1fr 180px;align-items:center;gap:22px;
+    }
+    .footer-col.center{text-align:center}
+    .footer-title{font-weight:800;font-size:clamp(18px,2.4vw,22px);margin:0 0 8px;letter-spacing:.2px}
+    .footer-line{margin:6px 0;color:var(--muted);font-weight:600}
+    .footer-line a{color:inherit;text-decoration:none}
+    .footer-line a:hover{ text-decoration:underline }
+    .footer-img{width:160px;height:auto;border-radius:14px;box-shadow:0 10px 26px rgba(0,0,0,.14);background:#fff;padding:10px}
+    .footer-img.logo{border-radius:16px}
+
+    /* Lightbox */
+    body.no-scroll{overflow:hidden}
+    .lightbox{
+      position:fixed;inset:0;background:rgba(0,0,0,.85);
+      display:grid;place-items:center;opacity:0;pointer-events:none;
+      transition:opacity .25s ease;z-index:9999;
+    }
+    .lightbox.show{opacity:1;pointer-events:auto}
+    .lightbox img{
+      max-width:95vw;max-height:90vh;border-radius:12px;
+      box-shadow:0 20px 60px rgba(0,0,0,.5), 0 0 80px rgba(255,255,255,.35);
+      background:#111;
+    }
+    .lb-btn{
+      position:absolute;border:0;cursor:pointer;color:#0b1220;
+      width:48px;height:48px;border-radius:50%;background:#fff;
+      display:grid;place-items:center;font-size:26px;line-height:1;
+      box-shadow:0 10px 26px rgba(0,0,0,.25);
+      transition:transform .12s ease, opacity .2s ease;
+    }
+    .lb-btn:active{transform:scale(.96)}
+    .lb-close{top:24px;right:24px;font-size:30px}
+    .lb-prev{left:22px;top:50%;transform:translateY(-50%)}
+    .lb-next{right:22px;top:50%;transform:translateY(-50%)}
+    .lb-count{
+      position:absolute;bottom:18px;left:50%;transform:translateX(-50%);
+      color:#e8eefc;font-weight:700;letter-spacing:.4px;
+      background:rgba(0,0,0,.35);padding:6px 10px;border-radius:999px;font-size:13px;
+    }
+
+    /* Responsive tweaks */
+    @media (max-width:900px){
+      .slide{flex-basis:clamp(260px,60vw,420px);max-width:clamp(260px,60vw,420px)}
+      .footer-inner{grid-template-columns:1fr;text-align:center;gap:18px}
+      .footer-img{margin:0 auto}
+    }
+    @media (max-width:700px){
+      .lb-btn{width:44px;height:44px}
+      .lb-prev{left:12px}.lb-next{right:12px}
+      .lb-close{top:14px;right:14px}
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <h1 class="addr">2215 Northglen Drive, Colorado Springs, CO 80909</h1>
+    <p class="price">For Sale • $549,000</p>
+    <p class="meta">5 Beds / 3 Baths / 2 Car Garage</p>
+  </header>
+
+  <!-- Carousel (uniform size; center gets glow; manual arrows) -->
+  <section class="carousel-wrap" aria-label="Property photos">
+    <button class="nav prev" aria-label="Previous" id="prevBtn">❮</button>
+    <div class="track" id="track">
+      <!-- 70 explicit images -->
+      <div class="slide"><img src="images/01.jpg" alt="Image 1"></div>
+      <div class="slide"><img src="images/02.jpg" alt="Image 2"></div>
+      <div class="slide"><img src="images/03.jpg" alt="Image 3"></div>
+      <div class="slide"><img src="images/04.jpg" alt="Image 4"></div>
+      <div class="slide"><img src="images/05.jpg" alt="Image 5"></div>
+      <div class="slide"><img src="images/06.jpg" alt="Image 6"></div>
+      <div class="slide"><img src="images/07.jpg" alt="Image 7"></div>
+      <div class="slide"><img src="images/08.jpg" alt="Image 8"></div>
+      <div class="slide"><img src="images/09.jpg" alt="Image 9"></div>
+      <div class="slide"><img src="images/10.jpg" alt="Image 10"></div>
+      <div class="slide"><img src="images/11.jpg" alt="Image 11"></div>
+      <div class="slide"><img src="images/12.jpg" alt="Image 12"></div>
+      <div class="slide"><img src="images/13.jpg" alt="Image 13"></div>
+      <div class="slide"><img src="images/14.jpg" alt="Image 14"></div>
+      <div class="slide"><img src="images/15.jpg" alt="Image 15"></div>
+      <div class="slide"><img src="images/16.jpg" alt="Image 16"></div>
+      <div class="slide"><img src="images/17.jpg" alt="Image 17"></div>
+      <div class="slide"><img src="images/18.jpg" alt="Image 18"></div>
+      <div class="slide"><img src="images/19.jpg" alt="Image 19"></div>
+      <div class="slide"><img src="images/20.jpg" alt="Image 20"></div>
+      <div class="slide"><img src="images/21.jpg" alt="Image 21"></div>
+      <div class="slide"><img src="images/22.jpg" alt="Image 22"></div>
+      <div class="slide"><img src="images/23.jpg" alt="Image 23"></div>
+      <div class="slide"><img src="images/24.jpg" alt="Image 24"></div>
+      <div class="slide"><img src="images/25.jpg" alt="Image 25"></div>
+      <div class="slide"><img src="images/26.jpg" alt="Image 26"></div>
+      <div class="slide"><img src="images/27.jpg" alt="Image 27"></div>
+      <div class="slide"><img src="images/28.jpg" alt="Image 28"></div>
+      <div class="slide"><img src="images/29.jpg" alt="Image 29"></div>
+      <div class="slide"><img src="images/30.jpg" alt="Image 30"></div>
+      <div class="slide"><img src="images/31.jpg" alt="Image 31"></div>
+      <div class="slide"><img src="images/32.jpg" alt="Image 32"></div>
+      <div class="slide"><img src="images/33.jpg" alt="Image 33"></div>
+      <div class="slide"><img src="images/34.jpg" alt="Image 34"></div>
+      <div class="slide"><img src="images/35.jpg" alt="Image 35"></div>
+      <div class="slide"><img src="images/36.jpg" alt="Image 36"></div>
+      <div class="slide"><img src="images/37.jpg" alt="Image 37"></div>
+      <div class="slide"><img src="images/38.jpg" alt="Image 38"></div>
+      <div class="slide"><img src="images/39.jpg" alt="Image 39"></div>
+      <div class="slide"><img src="images/40.jpg" alt="Image 40"></div>
+      <div class="slide"><img src="images/41.jpg" alt="Image 41"></div>
+      <div class="slide"><img src="images/42.jpg" alt="Image 42"></div>
+      <div class="slide"><img src="images/43.jpg" alt="Image 43"></div>
+      <div class="slide"><img src="images/44.jpg" alt="Image 44"></div>
+      <div class="slide"><img src="images/45.jpg" alt="Image 45"></div>
+      <div class="slide"><img src="images/46.jpg" alt="Image 46"></div>
+      <div class="slide"><img src="images/47.jpg" alt="Image 47"></div>
+      <div class="slide"><img src="images/48.jpg" alt="Image 48"></div>
+      <div class="slide"><img src="images/49.jpg" alt="Image 49"></div>
+      <div class="slide"><img src="images/50.jpg" alt="Image 50"></div>
+      <div class="slide"><img src="images/51.jpg" alt="Image 51"></div>
+      <div class="slide"><img src="images/52.jpg" alt="Image 52"></div>
+      <!-- <div class="slide"><img src="images/53.jpg" alt="Image 53"></div>
+      <div class="slide"><img src="images/54.jpg" alt="Image 54"></div>
+      <div class="slide"><img src="images/55.jpg" alt="Image 55"></div>
+      <div class="slide"><img src="images/56.jpg" alt="Image 56"></div>
+      <div class="slide"><img src="images/57.jpg" alt="Image 57"></div>
+      <div class="slide"><img src="images/58.jpg" alt="Image 58"></div>
+      <div class="slide"><img src="images/59.jpg" alt="Image 59"></div>
+      <div class="slide"><img src="images/60.jpg" alt="Image 60"></div>
+      <div class="slide"><img src="images/61.jpg" alt="Image 61"></div>
+      <div class="slide"><img src="images/62.jpg" alt="Image 62"></div>
+      <div class="slide"><img src="images/63.jpg" alt="Image 63"></div>
+      <div class="slide"><img src="images/64.jpg" alt="Image 64"></div>
+      <div class="slide"><img src="images/65.jpg" alt="Image 65"></div>
+      <div class="slide"><img src="images/66.jpg" alt="Image 66"></div>
+      <div class="slide"><img src="images/67.jpg" alt="Image 67"></div>
+      <div class="slide"><img src="images/68.jpg" alt="Image 68"></div>
+      <div class="slide"><img src="images/69.jpg" alt="Image 69"></div>
+      <div class="slide"><img src="images/70.jpg" alt="Image 70"></div> -->
+    </div>
+    <button class="nav next" aria-label="Next" id="nextBtn">❯</button>
+  </section>
+
+  <!-- Overview -->
+  <section class="section">
+    <article class="overview">
+      <h2>Overview</h2>
+      <p>Fully Remodeled Beauty – Move-In Ready!     Step inside this stunning, top-to-bottom renovation and experience modern comfort at its finest. Every detail of this 5-bedroom, 3-bath home has been carefully updated — from fresh flooring and designer finishes to a chef-inspired kitchen with sleek countertops, premium cabinetry, and stainless steel appliances.     The open-concept layout is perfect for both everyday living and entertaining, while the abundance of natural light creates a warm, welcoming atmosphere. Retreat to the spacious primary suite with a beautifully updated en-suite bath, or enjoy the flexibility of four additional bedrooms for family, guests, or a home office.     Downstairs, a fully finished lower level offers an expansive family room, perfect for movie nights or game days. Outside, the large yard is ready for summer gatherings, playtime, or a quiet morning coffee. A 2-car garage provides plenty of storage and convenience.     Located in a quiet, established neighborhood with easy access to parks, shopping, dining, and top-rated schools — this home is truly move-in ready and built to impress.</p>
+    </article>
+  </section>
+
+  <!-- Video -->
+  <section class="video-outer">
+    <div class="video">
+      <iframe
+        src="https://www.youtube.com/embed/Dsu3kNMYzPY?modestbranding=1&rel=0&playsinline=1"
+        title="Video tour"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowfullscreen></iframe>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-col left">
+        <a href="tel:17193105185" aria-label="Call Matt">
+          <img class="footer-img" src="images/headshot.jpg" alt="Agent headshot">
+        </a>
+      </div>
+      <div class="footer-col center">
+        <p class="footer-title">Contact Matt Tolooee, Your Real Estate GPS!</p>
+        <p class="footer-line"><a href="tel:17193105185">719.310.5185</a>
+        <p class="footer-line"><a href="mailto:matt@metro-realestategroup.com">matt@metro-realestategroup.com</a></p>
+        <p class="footer-line"><a href="https://metrorealestategroup.co/">metrorealestategroup.co</a></p>
+        <p class="footer-line"><a href="https://linktr.ee/metrorealestategroup">linktr.ee/metrorealestategroup</a></p>
+        <p class="footer-line">106 N Tejon Street, Colorado Springs, CO 80903</p>
+      </div>
+      <div class="footer-col right" style="text-align:right">
+        <a href="https://metrorealestategroup.co/" target="_blank" rel="noopener" aria-label="Visit Metro Real Estate Group">
+          <img class="footer-img logo" src="images/logo.jpg" alt="Company logo">
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Lightbox -->
+  <div id="lightbox" class="lightbox" aria-hidden="true">
+    <button class="lb-btn lb-close" aria-label="Close">×</button>
+    <button class="lb-btn lb-prev" aria-label="Previous">❮</button>
+    <img id="lb-img" alt="Expanded photo">
+    <button class="lb-btn lb-next" aria-label="Next">❯</button>
+    <div class="lb-count" id="lb-count"></div>
+  </div>
+
+  <script>
+    // --- Carousel (uniform size; center glow) ---
+    const track = document.getElementById('track');
+    const slides = Array.from(track.querySelectorAll('.slide'));
+    const prev = document.getElementById('prevBtn');
+    const next = document.getElementById('nextBtn');
+
+    let index = 0; // Always start at Image 01
+
+    function centerSlide(i, instant=false){
+      const el = slides[i];
+      const left = el.offsetLeft - (track.clientWidth/2 - el.clientWidth/2);
+      track.scrollTo({ left, behavior: instant ? 'auto' : 'smooth' });
+      slides.forEach((s,k)=> s.classList.toggle('active', k===i));
+    }
+
+    function move(dir){
+      index = (index + dir + slides.length) % slides.length;
+      centerSlide(index);
+    }
+
+    prev.addEventListener('click', () => move(-1));
+    next.addEventListener('click', () => move(1));
+
+    window.addEventListener('resize', () => centerSlide(index, true));
+
+    // Wait for images, then center Image 01 perfectly
+    function whenReady(){
+      const imgs = slides.map(s => s.querySelector('img'));
+      const ps = imgs.map(img => img.complete ? Promise.resolve()
+        : new Promise(res => { img.addEventListener('load', res, {once:true}); img.addEventListener('error', res, {once:true}); })
+      );
+      return Promise.all(ps);
+    }
+    window.addEventListener('load', () => {
+      whenReady().then(() => {
+        requestAnimationFrame(() => requestAnimationFrame(() => centerSlide(index, true)));
+      });
+    });
+
+    // --- Lightbox ---
+    const lb = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lb-img');
+    const lbCount = document.getElementById('lb-count');
+    const lbPrev = lb.querySelector('.lb-prev');
+    const lbNext = lb.querySelector('.lb-next');
+    const lbClose = lb.querySelector('.lb-close');
+
+    function updateLightbox(){
+      const src = slides[index].querySelector('img').getAttribute('src');
+      lbImg.src = src;
+      lbCount.textContent = `${index + 1} / ${slides.length}`;
+    }
+
+    function openLightbox(i){
+      index = i;
+      updateLightbox();
+      lb.classList.add('show');
+      lb.setAttribute('aria-hidden','false');
+      document.body.classList.add('no-scroll');
+    }
+    function closeLightbox(){
+      lb.classList.remove('show');
+      lb.setAttribute('aria-hidden','true');
+      document.body.classList.remove('no-scroll');
+    }
+    function lightboxMove(dir){
+      index = (index + dir + slides.length) % slides.length;
+      updateLightbox();
+      // keep carousel highlight roughly in sync after close
+      centerSlide(index, true);
+    }
+
+    // Open lightbox on slide click
+    slides.forEach((s,i)=> s.addEventListener('click', () => openLightbox(i)));
+
+    lbPrev.addEventListener('click', () => lightboxMove(-1));
+    lbNext.addEventListener('click', () => lightboxMove(1));
+    lbClose.addEventListener('click', closeLightbox);
+
+    // Close on backdrop click
+    lb.addEventListener('click', (e) => { if (e.target === lb) closeLightbox(); });
+
+    // Keyboard & swipe support
+    window.addEventListener('keydown', (e) => {
+      if (!lb.classList.contains('show')) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') lightboxMove(-1);
+      if (e.key === 'ArrowRight') lightboxMove(1);
+    });
+    let touchX = null;
+    lb.addEventListener('touchstart', (e) => { touchX = e.touches[0].clientX; }, {passive:true});
+    lb.addEventListener('touchend', (e) => {
+      if (touchX === null) return;
+      const dx = e.changedTouches[0].clientX - touchX;
+      if (Math.abs(dx) > 50){ lightboxMove(dx > 0 ? -1 : 1); }
+      touchX = null;
+    }, {passive:true});
+  </script>
+</body>
+</html>
+
+
