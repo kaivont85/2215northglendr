@@ -5,24 +5,17 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>2215 Northglen Drive</title>
 
-  <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
 
   <style>
     :root{
-      --bg:#e9f1ff;
-      --ink:#1e1f23;
-      --muted:#6b7280;
-      --card:#ffffff;
+      --bg:#e9f1ff; --ink:#1e1f23; --muted:#6b7280; --card:#ffffff;
       --glow: 0 0 32px rgba(255,255,255,.9), 0 0 64px rgba(255,255,255,.6);
+      --tile: 420px; --arrowW: 46px; --arrowPad: 12px;
     }
     *{box-sizing:border-box}
     html,body{margin:0;padding:0}
-    body{
-      font-family:'Montserrat',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-      color:var(--ink);background:var(--bg);
-      -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
-    }
+    body{font-family:'Montserrat',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--ink);background:var(--bg)}
     img{max-width:100%;display:block}
 
     /* Header */
@@ -31,46 +24,31 @@
     header .price{margin:6px 0 4px;font-weight:800}
     header .meta{margin:0 0 12px;color:var(--muted);font-weight:600;letter-spacing:.2px}
 
-    /* Carousel – big, uniform tiles (like your old site) */
-    .carousel-wrap{position:relative;max-width:1400px;margin:0 auto 28px;padding:22px 64px}
+    /* Carousel */
+    .carousel-wrap{position:relative;max-width:1400px;margin:0 auto 28px;padding:22px 0}
     .track{
-      display:flex;gap:22px;align-items:center;
-      overflow-x:auto;overflow-y:visible; /* never clip vertically */
-      scroll-behavior:smooth;
-      padding:6px 4px 12px;scrollbar-width:none;
+      display:flex;gap:22px;align-items:center;overflow-x:auto;overflow-y:visible;scroll-behavior:smooth;
+      padding:6px calc(var(--arrowW) + var(--arrowPad)) 12px;scrollbar-width:none;width:100%;
     }
     .track::-webkit-scrollbar{display:none}
-
     .slide{
-      flex:0 0 clamp(320px, 30vw, 520px);
-      max-width:clamp(320px, 30vw, 520px);
-      background:var(--card);
-      border-radius:16px;
-      box-shadow:0 8px 22px rgba(0,0,0,.10);
-      transition:box-shadow .35s ease, filter .35s ease, opacity .35s ease;
-      opacity:.55;                          /* non-center = subtly dim */
-      filter:saturate(.9);
-      cursor:pointer;
+      flex:0 0 var(--tile);max-width:var(--tile);background:var(--card);border-radius:16px;
+      box-shadow:0 8px 22px rgba(0,0,0,.10);transition:box-shadow .3s ease, filter .3s ease, opacity .3s ease;
+      opacity:.55;filter:saturate(.9);cursor:pointer;
     }
-    .slide img{
-      width:100%;height:auto;border-radius:16px;
-      user-select:none;pointer-events:none;
-    }
-    .slide.active{
-      opacity:1;filter:saturate(1);
-      box-shadow:var(--glow), 0 10px 28px rgba(0,0,0,.12); /* soft white glow */
-    }
+    .slide img{width:100%;border-radius:16px;user-select:none;pointer-events:none}
+    .slide.active{opacity:1;filter:saturate(1);box-shadow:var(--glow), 0 10px 28px rgba(0,0,0,.12)}
+    .is-side{filter:blur(2.2px) saturate(.9);opacity:.78}
+    .hidden{opacity:0;visibility:hidden;pointer-events:none}
 
     .nav{
-      position:absolute;top:50%;transform:translateY(-50%);
-      width:46px;height:46px;border:0;border-radius:50%;cursor:pointer;
-      background:#fff;display:grid;place-items:center;
-      box-shadow:0 10px 26px rgba(0,0,0,.18);
-      z-index:3;
+      position:absolute;top:50%;transform:translateY(-50%);width:var(--arrowW);height:var(--arrowW);
+      border:0;border-radius:50%;cursor:pointer;background:#fff;display:grid;place-items:center;
+      box-shadow:0 10px 26px rgba(0,0,0,.18);z-index:30
     }
     .nav:active{transform:translateY(-50%) scale(.97)}
-    .prev{left:12px}
-    .next{right:12px}
+    .prev{left:var(--arrowPad)} .next{right:var(--arrowPad)}
+    .nav svg{width:22px;height:22px}
 
     /* Sections */
     .section{max-width:1200px;margin:0 auto;padding:0 18px}
@@ -78,27 +56,17 @@
     .overview h2{font-size:clamp(24px,3.2vw,32px);margin:0 0 14px}
     .overview p{line-height:1.7;font-size:17px;margin:0}
 
-    .video-outer{max-width:1200px;margin:0 auto 36px;padding:0 18px}
-    .video{position:relative;width:100%;aspect-ratio:16/9;border-radius:16px;overflow:hidden;box-shadow:0 12px 28px rgba(0,0,0,.16);background:#000}
-    .video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
-
-    /* Full-width footer you liked */
-    .site-footer{
-      margin-top:40px;
-      background:
-        radial-gradient(1200px 300px at 50% -120px, rgba(255,255,255,.75), transparent 70%),
-        linear-gradient(180deg,#eaf2ff 0%,#dfeaff 100%);
-      padding:42px 18px 60px;width:100%;
-    }
-    .footer-inner{
-      max-width:1400px;margin:0 auto;background:#fff;border-radius:18px;box-shadow:0 16px 40px rgba(0,0,0,.12);
-      padding:34px 24px;display:grid;grid-template-columns:180px 1fr 180px;align-items:center;gap:22px;
-    }
+    /* Footer */
+    .site-footer{margin-top:40px;background:
+      radial-gradient(1200px 300px at 50% -120px, rgba(255,255,255,.75), transparent 70%),
+      linear-gradient(180deg,#eaf2ff 0%,#dfeaff 100%);padding:42px 18px 60px;width:100%}
+    .footer-inner{max-width:1400px;margin:0 auto;background:#fff;border-radius:18px;box-shadow:0 16px 40px rgba(0,0,0,.12);
+      padding:34px 24px;display:grid;grid-template-columns:180px 1fr 180px;align-items:center;gap:22px}
     .footer-col.center{text-align:center}
     .footer-title{font-weight:800;font-size:clamp(18px,2.4vw,22px);margin:0 0 8px;letter-spacing:.2px}
     .footer-line{margin:6px 0;color:var(--muted);font-weight:600}
     .footer-line a{color:inherit;text-decoration:none}
-    .footer-line a:hover{ text-decoration:underline }
+    .footer-line a:hover{text-decoration:underline}
     .footer-img{width:160px;height:auto;border-radius:14px;box-shadow:0 10px 26px rgba(0,0,0,.14);background:#fff;padding:10px}
     .footer-img.logo{border-radius:16px}
 
@@ -111,37 +79,31 @@
     }
     .lightbox.show{opacity:1;pointer-events:auto}
     .lightbox img{
-      max-width:95vw;max-height:90vh;border-radius:12px;
+      max-width:95vw;max-height:90vh;border-radius:12px;background:#111;
       box-shadow:0 20px 60px rgba(0,0,0,.5), 0 0 80px rgba(255,255,255,.35);
-      background:#111;
+      z-index:2;
     }
-    .lb-btn{
-      position:absolute;border:0;cursor:pointer;color:#0b1220;
-      width:48px;height:48px;border-radius:50%;background:#fff;
-      display:grid;place-items:center;font-size:26px;line-height:1;
+    .lb-close{
+      position:fixed;top:24px;right:24px;z-index:1000;border:0;border-radius:50%;
+      width:48px;height:48px;background:#fff;display:grid;place-items:center;cursor:pointer;
       box-shadow:0 10px 26px rgba(0,0,0,.25);
-      transition:transform .12s ease, opacity .2s ease;
     }
-    .lb-btn:active{transform:scale(.96)}
-    .lb-close{top:24px;right:24px;font-size:30px}
-    .lb-prev{left:22px;top:50%;transform:translateY(-50%)}
-    .lb-next{right:22px;top:50%;transform:translateY(-50%)}
+    .lb-close svg{width:24px;height:24px}
     .lb-count{
-      position:absolute;bottom:18px;left:50%;transform:translateX(-50%);
+      position:fixed;bottom:18px;left:50%;transform:translateX(-50%);
       color:#e8eefc;font-weight:700;letter-spacing:.4px;
-      background:rgba(0,0,0,.35);padding:6px 10px;border-radius:999px;font-size:13px;
+      background:rgba(0,0,0,.35);padding:6px 10px;border-radius:999px;font-size:13px;z-index:5;
     }
 
-    /* Responsive tweaks */
-    @media (max-width:900px){
-      .slide{flex-basis:clamp(260px,60vw,420px);max-width:clamp(260px,60vw,420px)}
-      .footer-inner{grid-template-columns:1fr;text-align:center;gap:18px}
-      .footer-img{margin:0 auto}
-    }
+    /* Fullscreen left/right click zones */
+    .lb-zones{position:fixed;inset:0;display:flex;z-index:3}
+    .lb-zones .zone{flex:1 1 50%;cursor:pointer;background:transparent}
+    .lb-zones .left{cursor:w-resize}
+    .lb-zones .right{cursor:e-resize}
+
     @media (max-width:700px){
-      .lb-btn{width:44px;height:44px}
-      .lb-prev{left:12px}.lb-next{right:12px}
-      .lb-close{top:14px;right:14px}
+      .lb-close{width:44px;height:44px;top:14px;right:14px}
+      .lb-close svg{width:20px;height:20px}
     }
   </style>
 </head>
@@ -154,11 +116,13 @@
     <p class="meta">5 Beds / 3 Baths / 2 Car Garage</p>
   </header>
 
-  <!-- Carousel (uniform size; center gets glow; manual arrows) -->
+  <!-- Carousel -->
   <section class="carousel-wrap" aria-label="Property photos">
-    <button class="nav prev" aria-label="Previous" id="prevBtn">❮</button>
+    <button class="nav prev" aria-label="Previous" id="prevBtn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
     <div class="track" id="track">
-      <!-- 70 explicit images -->
+      <!-- 01..52 -->
       <div class="slide"><img src="images/01.JPG" alt="Image 1"></div>
       <div class="slide"><img src="images/02.JPG" alt="Image 2"></div>
       <div class="slide"><img src="images/03.JPG" alt="Image 3"></div>
@@ -211,46 +175,19 @@
       <div class="slide"><img src="images/50.JPG" alt="Image 50"></div>
       <div class="slide"><img src="images/51.JPG" alt="Image 51"></div>
       <div class="slide"><img src="images/52.JPG" alt="Image 52"></div>
-      <!-- <div class="slide"><img src="images/53.jpg" alt="Image 53"></div>
-      <div class="slide"><img src="images/54.jpg" alt="Image 54"></div>
-      <div class="slide"><img src="images/55.jpg" alt="Image 55"></div>
-      <div class="slide"><img src="images/56.jpg" alt="Image 56"></div>
-      <div class="slide"><img src="images/57.jpg" alt="Image 57"></div>
-      <div class="slide"><img src="images/58.jpg" alt="Image 58"></div>
-      <div class="slide"><img src="images/59.jpg" alt="Image 59"></div>
-      <div class="slide"><img src="images/60.jpg" alt="Image 60"></div>
-      <div class="slide"><img src="images/61.jpg" alt="Image 61"></div>
-      <div class="slide"><img src="images/62.jpg" alt="Image 62"></div>
-      <div class="slide"><img src="images/63.jpg" alt="Image 63"></div>
-      <div class="slide"><img src="images/64.jpg" alt="Image 64"></div>
-      <div class="slide"><img src="images/65.jpg" alt="Image 65"></div>
-      <div class="slide"><img src="images/66.jpg" alt="Image 66"></div>
-      <div class="slide"><img src="images/67.jpg" alt="Image 67"></div>
-      <div class="slide"><img src="images/68.jpg" alt="Image 68"></div>
-      <div class="slide"><img src="images/69.jpg" alt="Image 69"></div>
-      <div class="slide"><img src="images/70.jpg" alt="Image 70"></div> -->
     </div>
-    <button class="nav next" aria-label="Next" id="nextBtn">❯</button>
+    <button class="nav next" aria-label="Next" id="nextBtn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+    </button>
   </section>
 
   <!-- Overview -->
   <section class="section">
     <article class="overview">
       <h2>Overview</h2>
-      <p>Fully Remodeled Beauty – Move-In Ready!     Step inside this stunning, top-to-bottom renovation and experience modern comfort at its finest. Every detail of this 5-bedroom, 3-bath home has been carefully updated — from fresh flooring and designer finishes to a chef-inspired kitchen with sleek countertops, premium cabinetry, and stainless steel appliances.     The open-concept layout is perfect for both everyday living and entertaining, while the abundance of natural light creates a warm, welcoming atmosphere. Retreat to the spacious primary suite with a beautifully updated en-suite bath, or enjoy the flexibility of four additional bedrooms for family, guests, or a home office.     Downstairs, a fully finished lower level offers an expansive family room, perfect for movie nights or game days. Outside, the large yard is ready for summer gatherings, playtime, or a quiet morning coffee. A 2-car garage provides plenty of storage and convenience.     Located in a quiet, established neighborhood with easy access to parks, shopping, dining, and top-rated schools — this home is truly move-in ready and built to impress.</p>
+      <p>Fully Remodeled Beauty – Move-In Ready! Step inside this stunning, top-to-bottom renovation and experience modern comfort at its finest. Every detail of this 5-bedroom, 3-bath home has been carefully updated — from fresh flooring and designer finishes to a chef-inspired kitchen with sleek countertops, premium cabinetry, and stainless steel appliances. The open-concept layout is perfect for both everyday living and entertaining, while the abundance of natural light creates a warm, welcoming atmosphere. Retreat to the spacious primary suite with a beautifully updated en-suite bath, or enjoy the flexibility of four additional bedrooms for family, guests, or a home office. Downstairs, a fully finished lower level offers an expansive family room, perfect for movie nights or game days. Outside, the large yard is ready for summer gatherings, playtime, or a quiet morning coffee. A 2-car garage provides plenty of storage and convenience. Located in a quiet, established neighborhood with easy access to parks, shopping, dining, and top-rated schools — this home is truly move-in ready and built to impress.</p>
     </article>
   </section>
-
-  <!-- Video -->
-  <!-- <section class="video-outer">
-    <div class="video">
-      <iframe
-        src="https://www.youtube.com/embed/Dsu3kNMYzPY?modestbranding=1&rel=0&playsinline=1"
-        title="Video tour"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        allowfullscreen></iframe>
-    </div>
-  </section> -->
 
   <!-- Footer -->
   <footer class="site-footer">
@@ -278,97 +215,131 @@
 
   <!-- Lightbox -->
   <div id="lightbox" class="lightbox" aria-hidden="true">
-    <button class="lb-btn lb-close" aria-label="Close">×</button>
-    <button class="lb-btn lb-prev" aria-label="Previous">❮</button>
+    <button class="lb-close" aria-label="Close">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+
     <img id="lb-img" alt="Expanded photo">
-    <button class="lb-btn lb-next" aria-label="Next">❯</button>
+
     <div class="lb-count" id="lb-count"></div>
+
+    <!-- Fullscreen left/right click zones -->
+    <div class="lb-zones" aria-hidden="true">
+      <div class="zone left"></div>
+      <div class="zone right"></div>
+    </div>
   </div>
 
   <script>
-    // --- Carousel (uniform size; center glow) ---
+    /* Fit three tiles perfectly */
     const track = document.getElementById('track');
-    const slides = Array.from(track.querySelectorAll('.slide'));
-    const prev = document.getElementById('prevBtn');
-    const next = document.getElementById('nextBtn');
+    function fitThreeTiles(){
+      const cs = getComputedStyle(track);
+      const padL = parseFloat(cs.paddingLeft), padR = parseFloat(cs.paddingRight);
+      const gap  = parseFloat(cs.gap) || 22;
+      const inner = track.clientWidth - padL - padR;
+      const tile = Math.floor((inner - gap*2) / 3);
+      document.documentElement.style.setProperty('--tile', tile + 'px');
+    }
+    window.addEventListener('resize', fitThreeTiles);
 
-    let index = 0; // Always start at Image 01
+    /* Carousel with clones */
+    const originals = Array.from(track.querySelectorAll('.slide'));
+    const N = originals.length;
+    const firstClone = originals[0].cloneNode(true);
+    const lastClone  = originals[N-1].cloneNode(true);
+    track.insertBefore(lastClone, track.firstChild);
+    track.appendChild(firstClone);
+    const slides = Array.from(track.querySelectorAll('.slide'));
+
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+
+    let index = 1; // start at image 01 (with last on the left)
+
+    function applyStates(i){
+      const left  = i - 1, right = i + 1;
+      slides.forEach((s,k)=>{
+        s.classList.remove('active','is-side','hidden');
+        if (k === i) s.classList.add('active');
+        else if (k === left || k === right) s.classList.add('is-side');
+        else s.classList.add('hidden');
+      });
+    }
 
     function centerSlide(i, instant=false){
       const el = slides[i];
       const left = el.offsetLeft - (track.clientWidth/2 - el.clientWidth/2);
       track.scrollTo({ left, behavior: instant ? 'auto' : 'smooth' });
-      slides.forEach((s,k)=> s.classList.toggle('active', k===i));
+      applyStates(i);
+    }
+
+    function jumpIfClone(){
+      if (index === 0){ index = N; centerSlide(index, true); }
+      else if (index === N+1){ index = 1; centerSlide(index, true); }
     }
 
     function move(dir){
-      index = (index + dir + slides.length) % slides.length;
+      index += dir;
       centerSlide(index);
+      setTimeout(jumpIfClone, 360);
     }
 
-    prev.addEventListener('click', () => move(-1));
-    next.addEventListener('click', () => move(1));
+    prevBtn.addEventListener('click', () => move(-1));
+    nextBtn.addEventListener('click', () => move(1));
+    window.addEventListener('resize', () => { fitThreeTiles(); centerSlide(index, true); });
 
-    window.addEventListener('resize', () => centerSlide(index, true));
-
-    // Wait for images, then center Image 01 perfectly
     function whenReady(){
       const imgs = slides.map(s => s.querySelector('img'));
-      const ps = imgs.map(img => img.complete ? Promise.resolve()
-        : new Promise(res => { img.addEventListener('load', res, {once:true}); img.addEventListener('error', res, {once:true}); })
-      );
-      return Promise.all(ps);
+      return Promise.all(imgs.map(img => img.complete ? Promise.resolve()
+        : new Promise(res => { img.addEventListener('load', res, {once:true}); img.addEventListener('error', res, {once:true}); })));
     }
+
     window.addEventListener('load', () => {
-      whenReady().then(() => {
-        requestAnimationFrame(() => requestAnimationFrame(() => centerSlide(index, true)));
-      });
+      fitThreeTiles();
+      whenReady().then(() => centerSlide(index, true));
     });
 
-    // --- Lightbox ---
+    /* Lightbox */
     const lb = document.getElementById('lightbox');
     const lbImg = document.getElementById('lb-img');
     const lbCount = document.getElementById('lb-count');
-    const lbPrev = lb.querySelector('.lb-prev');
-    const lbNext = lb.querySelector('.lb-next');
     const lbClose = lb.querySelector('.lb-close');
+    const zoneLeft  = lb.querySelector('.lb-zones .left');
+    const zoneRight = lb.querySelector('.lb-zones .right');
 
+    function realIdx(){ if (index===0) return N-1; if (index===N+1) return 0; return index-1; }
     function updateLightbox(){
-      const src = slides[index].querySelector('img').getAttribute('src');
-      lbImg.src = src;
-      lbCount.textContent = `${index + 1} / ${slides.length}`;
+      const img = slides[index].querySelector('img');
+      lbImg.src = img.getAttribute('src');
+      lbImg.alt = img.getAttribute('alt') || '';
+      lbCount.textContent = `${realIdx() + 1} / ${N}`;
     }
-
     function openLightbox(i){
-      index = i;
+      index = i; centerSlide(index, true);
       updateLightbox();
-      lb.classList.add('show');
-      lb.setAttribute('aria-hidden','false');
+      lb.classList.add('show'); lb.setAttribute('aria-hidden','false');
       document.body.classList.add('no-scroll');
     }
     function closeLightbox(){
-      lb.classList.remove('show');
-      lb.setAttribute('aria-hidden','true');
+      lb.classList.remove('show'); lb.setAttribute('aria-hidden','true');
       document.body.classList.remove('no-scroll');
     }
-    function lightboxMove(dir){
-      index = (index + dir + slides.length) % slides.length;
-      updateLightbox();
-      // keep carousel highlight roughly in sync after close
-      centerSlide(index, true);
-    }
+    function lightboxMove(dir){ move(dir); updateLightbox(); }
 
-    // Open lightbox on slide click
+    // open from tile
     slides.forEach((s,i)=> s.addEventListener('click', () => openLightbox(i)));
 
-    lbPrev.addEventListener('click', () => lightboxMove(-1));
-    lbNext.addEventListener('click', () => lightboxMove(1));
-    lbClose.addEventListener('click', closeLightbox);
+    lbClose.addEventListener('click', (e)=>{ e.stopPropagation(); closeLightbox(); });
 
-    // Close on backdrop click
-    lb.addEventListener('click', (e) => { if (e.target === lb) closeLightbox(); });
+    // big half-screen zones
+    zoneLeft.addEventListener('click',  (e)=>{ e.stopPropagation(); lightboxMove(-1); });
+    zoneRight.addEventListener('click', (e)=>{ e.stopPropagation(); lightboxMove(1); });
 
-    // Keyboard & swipe support
+    // clicking the backdrop itself does nothing
+    lb.addEventListener('click', (e) => { if (e.target === lb) { /* no-op */ } });
+
+    // keyboard + swipe
     window.addEventListener('keydown', (e) => {
       if (!lb.classList.contains('show')) return;
       if (e.key === 'Escape') closeLightbox();
@@ -386,5 +357,7 @@
   </script>
 </body>
 </html>
+
+
 
 
